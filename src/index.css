@@ -1,0 +1,12 @@
+.custom-tooltip {
+    background: #FFFFFF;
+    border: none;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  }
+  
+.leaflet-interactive:focus {
+    outline: none;
+}
