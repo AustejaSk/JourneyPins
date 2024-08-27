@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { MapContainer, TileLayer, Marker, Popup, useMap, GeoJSON } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 
-const MapComponent = () => {
+const MapComponent = ({ selectedColor, addedCountry }) => {
     const center = [0, 0]
+    const maxBounds = [[-90, -180], [90, 180]]
 
     const [geoJSONData, setGeoJSONData] = useState(null)
 
@@ -14,31 +15,21 @@ const MapComponent = () => {
         .catch(error => console.error('Error fetching GeoJSON:', error))
     }, [])
 
-    const SetMaxBounds = ({ padding }) => {
-        const map = useMap()
+    const geoJsonLayerRef = useRef()
+    const selectedColorRef = useRef(selectedColor)
+    const [selectedCountries, setSelectedCountries] = useState([])
 
-        useEffect(() => {
-            const bounds = map.getBounds()
-
-            const southWest = bounds.getSouthWest()
-            const northEast = bounds.getNorthEast()
-
-            const latPadding = padding.lat || 0.01
-            const lngPadding = padding.lng || 0.01
-
-            const paddedBounds = L.latLngBounds(
-                L.latLng(southWest.lat - latPadding, southWest.lng - lngPadding),
-                L.latLng(northEast.lat + latPadding, northEast.lng + lngPadding)
-            )
-
-            map.setMaxBounds(paddedBounds)
-            map.options.maxBoundsViscosity = 1.0
-        }, [map, padding])
-
-        return null
+    const defaultStyle = {
+      fillColor: '#FFFFFF',
+      color: 'none',
+      fillOpacity: 0.5
     }
 
-    const geoJsonLayerRef = useRef()
+    useEffect(() => {
+      if (selectedCountries !== addedCountry) {
+        setSelectedCountries(prevSelected => [...prevSelected, addedCountry])
+      }
+    }, [addedCountry])
 
     const onEachCountry = (country, layer) => {
 
@@ -48,24 +39,43 @@ const MapComponent = () => {
         className: 'custom-tooltip'
       })
 
+      const countryName = country.properties.ADMIN.toLowerCase()
+
       layer.on({
+
         click: () => {
-          layer.setStyle({
-            fillColor: 'pink',
-            fillOpacity: 0.7,
-            color: 'red',
-            weight: '1'
-          })
+          if (!selectedCountries.includes(countryName)) {
+            setSelectedCountries(prevSelected => [...prevSelected, countryName])
+          }
         },
 
         dblclick: () => {
-          if (geoJsonLayerRef.current) {
-            geoJsonLayerRef.current.resetStyle(layer)
-          }
+            setSelectedCountries(prevSelected => prevSelected.filter(country => country !== countryName))
         }
 
       })
     }
+
+    useEffect(() => {
+      selectedColorRef.current = selectedColor || "#348285"
+
+      if (geoJsonLayerRef.current) {
+
+        geoJsonLayerRef.current.eachLayer(layer => {
+
+          const countryName = layer.feature.properties.ADMIN.toLowerCase()
+
+          if (selectedCountries.includes(countryName)) {
+            layer.setStyle({
+              fillColor: selectedColorRef.current,
+              fillOpacity: 0.5,
+              color: 'none',
+              weight: '1'
+            })
+          }
+        })
+      }
+    }, [selectedColor, selectedCountries])
 
 
     return (
@@ -74,22 +84,24 @@ const MapComponent = () => {
             zoom={2}
             minZoom={2}
             maxZoom={18}
-            style={{ height: '80vh', width: '100%' }}
+            className='map'
             zoomControl={false}
             doubleClickZoom={false}
+            maxBounds={maxBounds}
+            maxBoundsViscosity={1.0}
         >
             <TileLayer
                 url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
             {geoJSONData && (
-                <GeoJSON data={geoJSONData}
-                  style={{color: 'none', fillColor: '#FFFFFF'}}
+                <GeoJSON 
+                  data={geoJSONData}
                   onEachFeature={onEachCountry}
                   ref={geoJsonLayerRef}
+                  style={defaultStyle}
                 />
             )}
-            <SetMaxBounds padding={{ lat: 8, lng: 30 }} />
         </MapContainer>
     )
 }
