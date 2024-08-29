@@ -2,7 +2,8 @@ import React, { useEffect, useState, useRef } from 'react'
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 
-const MapComponent = ({ selectedColor, addedCountry }) => {
+
+const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCountry, onRemoveCountry, getAllCountries }) => {
     const center = [0, 0]
     const maxBounds = [[-90, -180], [90, 180]]
 
@@ -11,13 +12,16 @@ const MapComponent = ({ selectedColor, addedCountry }) => {
     useEffect(() => {
       fetch('/countries.geojson')
         .then(res => res.json())
-        .then(data => setGeoJSONData(data))
+        .then(data => {
+          setGeoJSONData(data)
+          const countires = data.features.map(feature => feature.properties.ADMIN.toLowerCase())
+          getAllCountries(countires)
+        })
         .catch(error => console.error('Error fetching GeoJSON:', error))
     }, [])
 
     const geoJsonLayerRef = useRef()
     const selectedColorRef = useRef(selectedColor)
-    const [selectedCountries, setSelectedCountries] = useState([])
 
     const defaultStyle = {
       fillColor: '#FFFFFF',
@@ -26,10 +30,14 @@ const MapComponent = ({ selectedColor, addedCountry }) => {
     }
 
     useEffect(() => {
-      if (selectedCountries !== addedCountry) {
-        setSelectedCountries(prevSelected => [...prevSelected, addedCountry])
+      if (addedCountry) {
+        if (!selectedCountries.includes(addedCountry)) {
+          onAddCountry(addedCountry)
+        }
       }
     }, [addedCountry])
+
+    const clickTimeout = useRef(null)
 
     const onEachCountry = (country, layer) => {
 
@@ -44,15 +52,26 @@ const MapComponent = ({ selectedColor, addedCountry }) => {
       layer.on({
 
         click: () => {
-          if (!selectedCountries.includes(countryName)) {
-            setSelectedCountries(prevSelected => [...prevSelected, countryName])
+          if (clickTimeout.current) {
+            clearTimeout(clickTimeout.current)
+            clickTimeout.current = null
+          } else { 
+            clickTimeout.current = setTimeout(() => {
+              clickTimeout.current = null
+              if (!selectedCountries.includes(countryName)) {
+                onAddCountry(countryName)
+              }
+            }, 200)
           }
         },
 
         dblclick: () => {
-            setSelectedCountries(prevSelected => prevSelected.filter(country => country !== countryName))
+          if (clickTimeout.current) {
+            clearTimeout(clickTimeout.current)
+            clickTimeout.current = null
+          }
+          onRemoveCountry(countryName)
         }
-
       })
     }
 
@@ -76,7 +95,6 @@ const MapComponent = ({ selectedColor, addedCountry }) => {
         })
       }
     }, [selectedColor, selectedCountries])
-
 
     return (
         <MapContainer 
