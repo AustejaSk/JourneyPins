@@ -9,6 +9,7 @@ function App() {
   const [addedCountry, setAddedCountry] = useState('')
   const [selectedCountries, setSelectedCountries] = useState([])
   const [allCountries, setAllCountries] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
 
   const getColor = (color) => {
     setMapColor(color)
@@ -30,16 +31,24 @@ function App() {
     setAllCountries(list)
   }
 
+  const removeAllCountries = (countries) => {
+    countries.forEach(country => {
+      handleRemoveCountry(country)
+    })
+  }
+
 
   return (
     <div className="app">
-      <Header />
+      <Header isOpen={isOpen} setIsOpen={setIsOpen}/>
       <main>
         <ControlPanel
           getColorInput={getColor}
           getAddedCountry={getCountry}
           selectedCountries={selectedCountries}
           countriesList={allCountries}
+          removeAllCountries={removeAllCountries}
+          isOpen={isOpen}
         />
         <MapComponent 
           selectedColor={mapColor}

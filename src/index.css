@@ -5,7 +5,8 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Finlandica", sans-serif;
+  font-optical-sizing: auto;
 }
 
 .app {
@@ -23,10 +24,49 @@ header {
   align-items: center;
 }
 
-header > p {
-  font-size: 1.3rem;
+.menu {
+  display: none;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.menu-line {
+  background-color: #FFFFFF;
+  height: 4px;
+  width: 30px;
+  border-radius: 5px;
+}
+
+.menu-line:nth-child(2) {
+  width: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo > p {
+  font-family: "Nerko One", system-ui;
+  font-size: 2rem;
   font-weight: 700;
+  letter-spacing: 0.25em;
   margin: 0;
+  user-select: none;
+}
+
+.earth-icon {
+  margin-bottom: -10px;
+  margin-right: 3px;
+  margin-left: -3px;
+  width: 35px;
+  height: 35px;
+}
+
+.pin-icon {
+  width: 20px;
+  height: 20px;
+  margin-top: 5px;
 }
 
 main {
@@ -46,12 +86,12 @@ main {
 }
 
 .control-panel > h1 {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   margin: 0;
   padding: 1.5em 0 0;
 }
 
-form {
+.controls-container {
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -76,18 +116,30 @@ form {
   padding: 0.8em 1em;
 }
 
-.apply-changes-btn {
+label, .label {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.button {
   width: fit-content;
-  background-color: #265e60;
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  width: 100%;
-  padding: 0.8em 0;
+  padding: 0.8em 1.5em;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  font-family: inherit;
+  background-color: #265e60;
+  color: #FFFFFF;
 }
+
+.stats-container {
+  margin-top: 4em;
+}
+
 
 
 .custom-tooltip {
@@ -101,4 +153,91 @@ form {
   
 .leaflet-interactive:focus {
     outline: none;
+}
+
+
+/* Mobile Size */
+
+@media (max-width: 480px) {
+
+  header {
+    padding: 30px 16px;
+  }
+
+  .menu {
+    display: flex;
+    margin-right: auto;
+  }
+
+  .logo {
+    flex-grow: 1;
+    justify-content: center;
+  }
+
+  .logo > p {
+    font-size: 1.7rem;
+  }
+
+  .earth-icon {
+    margin-bottom: -8px;
+    width: 30px;
+    height: 30px;
+  }
+  
+  .pin-icon {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+  }
+
+  .map {
+    width: 100%;
+    height: 80vh;
+  }
+
+  .control-panel {
+    position: absolute;
+    top: 70px;
+    left:0;
+    height: calc(100% - 70px);
+    z-index: 9999;
+    width: 80%;
+    flex-direction: column;
+    padding: 1em;
+  }
+
+  .control-panel.open {
+    display: flex;
+  }
+
+  .control-panel.closed {
+    display: none;
+  }
+
+  .control-panel > h1 {
+    font-size: 1.6rem;
+    margin: 0;
+    padding: 1em 0 0;
+  }
+
+  .controls-option {
+    padding-bottom: 1em;
+  }
+  
+  .map-color-input {
+    width: 100%;
+    height: 50px;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .add-country-btn {
+    margin-top: 1em;
+  }
+
+  .stats-container {
+    margin-top: 2em;
+  }
 }
