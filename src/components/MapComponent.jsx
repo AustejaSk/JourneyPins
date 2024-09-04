@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import RightClickMenu from './RightClickMenu'
+import 'leaflet-contextmenu/dist/leaflet.contextmenu.css'
+import 'leaflet-contextmenu'
 
 
 const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCountry, onRemoveCountry, getAllCountries }) => {
@@ -11,7 +12,7 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
     const geoJsonLayerRef = useRef()
     const selectedColorRef = useRef(selectedColor)
     const [map, setMap] = useState(null)
-    const [contextMenu, setContextMenu] = useState(null)
+    // const [contextMenu, setContextMenu] = useState(null)
     const [markers, setMarkers] = useState([])
 
     useEffect(() => {
@@ -40,27 +41,27 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
     }, [addedCountry])
 
 
-    const handleContextMenu = (e) => {
-      e.originalEvent.preventDefault()
-      setContextMenu({
-        x: e.containerPoint.x,
-        y: e.containerPoint.y,
-        latlng: e.latlng
-      })
-    }
+    // const handleContextMenu = (e) => {
+    //   e.originalEvent.preventDefault()
+    //   setContextMenu({
+    //     x: e.containerPoint.x,
+    //     y: e.containerPoint.y,
+    //     latlng: e.latlng
+    //   })
+    // }
 
-    const handleAddPin = () => {
-      const newMarker = {
-        id: Date.now(),
-        position: [contextMenu.latlng.lat, contextMenu.latlng.lng]
-      }
-      setMarkers((prevMarkers) => [...prevMarkers, newMarker])
-      setContextMenu(null)
-    }
+    // const handleAddPin = () => {
+    //   const newMarker = {
+    //     id: Date.now(),
+    //     position: [contextMenu.latlng.lat, contextMenu.latlng.lng]
+    //   }
+    //   setMarkers((prevMarkers) => [...prevMarkers, newMarker])
+    //   setContextMenu(null)
+    // }
 
-    const removeMarker = (id) => {
-      setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id))
-    }
+    // const removeMarker = (id) => {
+    //   setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id))
+    // }
 
 
     const clickTimeout = useRef(null)
@@ -98,9 +99,7 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
             clickTimeout.current = null
           }
           onRemoveCountry(countryName)
-        },
-
-        contextmenu: handleContextMenu
+        }
       })
     }
 
@@ -127,6 +126,14 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
       }
     }, [selectedColor, selectedCountries])
 
+    function addPin (e) {
+      const newMarker = {
+        id: Date.now(),
+        position: [e.latlng.lat, e.latlng.lng]
+      }
+      setMarkers((prevMarkers) => [...prevMarkers, newMarker])
+    }
+    
     return (
         <MapContainer 
             center={center}
@@ -139,6 +146,12 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
             maxBounds={maxBounds}
             maxBoundsViscosity={1.0}
             ref={setMap}
+            contextmenu={true}
+            contextmenuWidth={140}
+            contextmenuItems= {[{
+              text: 'Add a pin',
+              callback: addPin
+            }]}
         >
             <TileLayer
                 url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -159,9 +172,6 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
                 </Popup>
               </Marker>
             ))}
-            {contextMenu && (
-              <RightClickMenu x={contextMenu.x} y={contextMenu.y} onAddPin={handleAddPin} />
-            )}
         </MapContainer>
     )
 }
