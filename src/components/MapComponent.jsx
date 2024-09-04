@@ -1,13 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import RightClickMenu from './RightClickMenu'
 
 
 const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCountry, onRemoveCountry, getAllCountries }) => {
     const center = [0, 0]
     const maxBounds = [[-90, -180], [90, 180]]
-
     const [geoJSONData, setGeoJSONData] = useState(null)
+    const geoJsonLayerRef = useRef()
+    const selectedColorRef = useRef(selectedColor)
+    const [map, setMap] = useState(null)
+    const [contextMenu, setContextMenu] = useState(null)
+    const [markers, setMarkers] = useState([])
 
     useEffect(() => {
       fetch('/countries.geojson')
@@ -19,9 +24,6 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
         })
         .catch(error => console.error('Error fetching GeoJSON:', error))
     }, [])
-
-    const geoJsonLayerRef = useRef()
-    const selectedColorRef = useRef(selectedColor)
 
     const defaultStyle = {
       fillColor: '#FFFFFF',
@@ -37,7 +39,32 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
       }
     }, [addedCountry])
 
+
+    const handleContextMenu = (e) => {
+      e.originalEvent.preventDefault()
+      setContextMenu({
+        x: e.containerPoint.x,
+        y: e.containerPoint.y,
+        latlng: e.latlng
+      })
+    }
+
+    const handleAddPin = () => {
+      const newMarker = {
+        id: Date.now(),
+        position: [contextMenu.latlng.lat, contextMenu.latlng.lng]
+      }
+      setMarkers((prevMarkers) => [...prevMarkers, newMarker])
+      setContextMenu(null)
+    }
+
+    const removeMarker = (id) => {
+      setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id))
+    }
+
+
     const clickTimeout = useRef(null)
+
 
     const onEachCountry = (country, layer) => {
 
@@ -71,7 +98,9 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
             clickTimeout.current = null
           }
           onRemoveCountry(countryName)
-        }
+        },
+
+        contextmenu: handleContextMenu
       })
     }
 
@@ -91,6 +120,8 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
               color: 'none',
               weight: '1'
             })
+          } else {
+            layer.setStyle(defaultStyle)
           }
         })
       }
@@ -107,6 +138,7 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
             doubleClickZoom={false}
             maxBounds={maxBounds}
             maxBoundsViscosity={1.0}
+            ref={setMap}
         >
             <TileLayer
                 url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -119,6 +151,16 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
                   ref={geoJsonLayerRef}
                   style={defaultStyle}
                 />
+            )}
+            {markers.map(marker => (
+              <Marker key={marker.id} position={marker.position}>
+                <Popup>
+                  <button onClick={() => removeMarker(marker.id)}>Remove Pin</button>
+                </Popup>
+              </Marker>
+            ))}
+            {contextMenu && (
+              <RightClickMenu x={contextMenu.x} y={contextMenu.y} onAddPin={handleAddPin} />
             )}
         </MapContainer>
     )
