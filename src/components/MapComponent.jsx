@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-contextmenu/dist/leaflet.contextmenu.css'
 import 'leaflet-contextmenu'
+import pinIcon from '../assets/pin-icon.png'
 
 
 const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCountry, onRemoveCountry, getAllCountries }) => {
@@ -12,7 +13,6 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
     const geoJsonLayerRef = useRef()
     const selectedColorRef = useRef(selectedColor)
     const [map, setMap] = useState(null)
-    // const [contextMenu, setContextMenu] = useState(null)
     const [markers, setMarkers] = useState([])
 
     useEffect(() => {
@@ -39,30 +39,6 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
         }
       }
     }, [addedCountry])
-
-
-    // const handleContextMenu = (e) => {
-    //   e.originalEvent.preventDefault()
-    //   setContextMenu({
-    //     x: e.containerPoint.x,
-    //     y: e.containerPoint.y,
-    //     latlng: e.latlng
-    //   })
-    // }
-
-    // const handleAddPin = () => {
-    //   const newMarker = {
-    //     id: Date.now(),
-    //     position: [contextMenu.latlng.lat, contextMenu.latlng.lng]
-    //   }
-    //   setMarkers((prevMarkers) => [...prevMarkers, newMarker])
-    //   setContextMenu(null)
-    // }
-
-    // const removeMarker = (id) => {
-    //   setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id))
-    // }
-
 
     const clickTimeout = useRef(null)
 
@@ -124,14 +100,41 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
           }
         })
       }
-    }, [selectedColor, selectedCountries])
+    }, [selectedColor, selectedCountries, markers])
 
-    function addPin (e) {
+    const addPin = (e) => {
       const newMarker = {
         id: Date.now(),
-        position: [e.latlng.lat, e.latlng.lng]
+        position: [e.latlng.lat, e.latlng.lng],
+        title: '',
+        isEditing: true
       }
       setMarkers((prevMarkers) => [...prevMarkers, newMarker])
+    }
+
+    const removeMarker = (id) => {
+      setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id))
+    }
+
+    const markerIcon = L.icon({
+      iconUrl: pinIcon,
+      iconSize: [35, 35]
+    })
+
+    const handleInputChange = (e, id) => {
+      setMarkers(prevMarkers => 
+        prevMarkers.map(marker =>
+          marker.id === id ? {...marker, title: e.target.value} : marker
+        )
+      )
+    }
+
+    const handleSubmitTitle = (id) => {
+      setMarkers(prevMarkers => 
+        prevMarkers.map(marker =>
+          marker.id === id ? {...marker, isEditing: false} : marker
+        )
+      )
     }
     
     return (
@@ -165,9 +168,15 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
                   style={defaultStyle}
                 />
             )}
-            {markers.map(marker => (
-              <Marker key={marker.id} position={marker.position}>
+            {markers && markers.length > 0 && markers.map((marker) => (
+              <Marker key={marker.id} position={marker.position} icon={markerIcon}>
                 <Popup>
+                  {marker.isEditing ? (
+                    <div>
+                      <input type='text' value={marker.title} onChange={(e) => handleInputChange(e, marker.id)} placeholder='Enter title'/>
+                      <button onClick={() => handleSubmitTitle(marker.id)}>Submit</button>
+                    </div>
+                  ) : <h3>{marker.title || 'No title'}</h3>}
                   <button onClick={() => removeMarker(marker.id)}>Remove Pin</button>
                 </Popup>
               </Marker>
