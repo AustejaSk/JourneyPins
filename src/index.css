@@ -140,6 +140,7 @@ label, .label {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 400;
+  font-family: "Finlandica", sans-serif;
 }
 
 .button {
@@ -151,16 +152,18 @@ label, .label {
   font-size: 1rem;
   letter-spacing: 0.05em;
   font-weight: 600;
-  font-family: inherit;
+  font-family: "Finlandica", sans-serif;
   background-color: #265e60;
   color: #FEFFFE;
+}
+
+.button:hover, .button:focus {
+  background-color: #1e494a;
 }
 
 .stats-container {
   margin-top: 4em;
 }
-
-
 
 .custom-tooltip {
     background: #FEFFFE;
@@ -175,19 +178,84 @@ label, .label {
     outline: none;
 }
 
-.right-click-menu {
-  position: absolute;
-  z-index: 1000;
-  background-color: black;
-  padding: .3em;
-  border-radius: 10px;
+.popup-inputs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin-bottom: 0.6em;
 }
 
-.right-click-menu > button {
-  background-color: white;
-  color: black;
-  cursor: pointer;
+.title-input {
+  font-size: 0.9rem;
+  border: 2px solid #AAD3DF;
   border-radius: 5px;
+  padding: 0.5em;
+  font-family: "Finlandica", sans-serif;
+}
+
+.title-input:focus {
+  outline: none;
+  border: 2px solid #53808e;
+}
+
+.upload-icon {
+  width: 12px;
+  height: auto;
+  margin-right: 5px;
+}
+
+[type="file"] {
+  height: 0;  
+  width: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+[type="file"] + label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0b0b0b;
+  border: 2px solid #AAD3DF;
+  padding: 0.5em;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+[type="file"]:focus + label,
+[type="file"] + label:hover {
+  border: 2px solid #53808e;
+}
+
+.popup-img {
+  width: 300px;
+  height: auto;
+}
+
+.popup-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #0b0b0b;
+}
+
+.popup-btn-container {
+  display: flex;
+  gap: 0.5em;
+  width: 100%;
+}
+
+.popup-submit-btn, .remove-marker-btn {
+  font-size: 0.9rem;
+  padding: 0.6em 1em;
+}
+
+.remove-marker-btn {
+  background-color: #EB003F;
+  white-space: nowrap;
+}
+
+.remove-marker-btn:hover,.remove-marker-btn:focus {
+  background-color: #CC0036;
 }
 
 

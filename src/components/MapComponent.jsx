@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet-contextmenu/dist/leaflet.contextmenu.css'
 import 'leaflet-contextmenu'
 import pinIcon from '../assets/pin-icon.png'
+import uploadIcon from '../assets/upload-icon.png'
 
 
 const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCountry, onRemoveCountry, getAllCountries }) => {
@@ -107,6 +108,7 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
         id: Date.now(),
         position: [e.latlng.lat, e.latlng.lng],
         title: '',
+        image: null,
         isEditing: true
       }
       setMarkers((prevMarkers) => [...prevMarkers, newMarker])
@@ -129,7 +131,16 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
       )
     }
 
-    const handleSubmitTitle = (id) => {
+    const handleImageInput = (e, id) => {
+      setMarkers(prevMarkers => 
+        prevMarkers.map(marker =>
+          marker.id === id ? {...marker, image: e.target.files[0]} : marker
+        )
+      )
+    }
+
+    const handlePopupSubmit = (e, id) => {
+      e.stopPropagation()
       setMarkers(prevMarkers => 
         prevMarkers.map(marker =>
           marker.id === id ? {...marker, isEditing: false} : marker
@@ -169,15 +180,47 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
                 />
             )}
             {markers && markers.length > 0 && markers.map((marker) => (
-              <Marker key={marker.id} position={marker.position} icon={markerIcon}>
-                <Popup>
+              <Marker
+                key={marker.id}
+                position={marker.position}
+                icon={markerIcon}
+                eventHandlers={{add: (e) => {e.target.openPopup()}}}
+              >
+                <Popup className='popup-container' minWidth='300px'>
                   {marker.isEditing ? (
-                    <div>
-                      <input type='text' value={marker.title} onChange={(e) => handleInputChange(e, marker.id)} placeholder='Enter title'/>
-                      <button onClick={() => handleSubmitTitle(marker.id)}>Submit</button>
+                    <div className='popup-inputs-container'>
+                      <label htmlFor='title-input' className='popup-label'>Add a title</label>
+                      <input
+                        className='title-input'
+                        id='title-input'
+                        type='text'
+                        placeholder='My trip to...'
+                        value={marker.title}
+                        onChange={(e) => handleInputChange(e, marker.id)}
+                      />
+                      <label htmlFor='image-import' className='popup-label'>Add an image</label>
+                      <input
+                        type='file'
+                        id='image-import'
+                        accept="image/png, image/jpeg"
+                        onChange={(e) => handleImageInput(e, marker.id)}
+                      />
+                      {marker.image ? <label htmlFor='image-import' className='image-import-btn'>{marker.image.name}</label> : (
+                          <label htmlFor='image-import' className='image-import-btn'><img className='upload-icon' src={uploadIcon}/>Choose a file...</label>
+                        )
+                      }
+                      <div className='popup-btn-container'>
+                        <button className='button popup-submit-btn' onClick={(e) => handlePopupSubmit(e, marker.id)}>Submit</button>
+                        <button className='button remove-marker-btn' onClick={() => removeMarker(marker.id)}>Remove Pin</button>
+                      </div>
                     </div>
-                  ) : <h3>{marker.title || 'No title'}</h3>}
-                  <button onClick={() => removeMarker(marker.id)}>Remove Pin</button>
+                  ) : (
+                    <div>
+                      <h3>{marker.title || 'No title'}</h3>
+                      {marker.image && <img className='popup-img' src={URL.createObjectURL(marker.image)} />}
+                      <button className='button remove-marker-btn' onClick={() => removeMarker(marker.id)}>Remove Pin</button>
+                    </div>
+                  )}
                 </Popup>
               </Marker>
             ))}
