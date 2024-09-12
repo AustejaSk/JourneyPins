@@ -3,8 +3,7 @@ import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-contextmenu/dist/leaflet.contextmenu.css'
 import 'leaflet-contextmenu'
-import pinIcon from '../assets/pin-icon.png'
-import uploadIcon from '../assets/upload-icon.png'
+import MarkerComponent from './MarkerComponent'
 
 
 const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCountry, onRemoveCountry, getAllCountries }) => {
@@ -13,8 +12,10 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
     const [geoJSONData, setGeoJSONData] = useState(null)
     const geoJsonLayerRef = useRef()
     const selectedColorRef = useRef(selectedColor)
-    const [map, setMap] = useState(null)
     const [markers, setMarkers] = useState([])
+
+
+    // Fetching countries from geoJson and saving them in a state. Calling getAllCountries with all country names from geoJson.
 
     useEffect(() => {
       fetch('/countries.geojson')
@@ -27,11 +28,8 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
         .catch(error => console.error('Error fetching GeoJSON:', error))
     }, [])
 
-    const defaultStyle = {
-      fillColor: '#FFFFFF',
-      color: 'none',
-      fillOpacity: 0.5
-    }
+
+    // Adding country from the input field if it isn't selected on the map yet.
 
     useEffect(() => {
       if (addedCountry) {
@@ -40,9 +38,11 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
         }
       }
     }, [addedCountry])
+    
+
+    // Adding toolip that shows country name and click and dbclick events for each layer.
 
     const clickTimeout = useRef(null)
-
 
     const onEachCountry = (country, layer) => {
 
@@ -80,6 +80,15 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
       })
     }
 
+
+    // Setting color for each layer on the map based on if the layer is in the selectedCountries array or not.
+
+    const defaultStyle = {
+      fillColor: '#FFFFFF',
+      color: 'none',
+      fillOpacity: 0.5
+    }
+
     useEffect(() => {
       selectedColorRef.current = selectedColor || "#348285"
 
@@ -103,6 +112,9 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
       }
     }, [selectedColor, selectedCountries, markers])
 
+
+    // Callback for contextmenuItems that adds a marker to the map.
+
     const addPin = (e) => {
       const newMarker = {
         id: Date.now(),
@@ -112,40 +124,6 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
         isEditing: true
       }
       setMarkers((prevMarkers) => [...prevMarkers, newMarker])
-    }
-
-    const removeMarker = (id) => {
-      setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id))
-    }
-
-    const markerIcon = L.icon({
-      iconUrl: pinIcon,
-      iconSize: [35, 35]
-    })
-
-    const handleInputChange = (e, id) => {
-      setMarkers(prevMarkers => 
-        prevMarkers.map(marker =>
-          marker.id === id ? {...marker, title: e.target.value} : marker
-        )
-      )
-    }
-
-    const handleImageInput = (e, id) => {
-      setMarkers(prevMarkers => 
-        prevMarkers.map(marker =>
-          marker.id === id ? {...marker, image: e.target.files[0]} : marker
-        )
-      )
-    }
-
-    const handlePopupSubmit = (e, id) => {
-      e.stopPropagation()
-      setMarkers(prevMarkers => 
-        prevMarkers.map(marker =>
-          marker.id === id ? {...marker, isEditing: false} : marker
-        )
-      )
     }
     
     return (
@@ -159,7 +137,6 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
             doubleClickZoom={false}
             maxBounds={maxBounds}
             maxBoundsViscosity={1.0}
-            ref={setMap}
             contextmenu={true}
             contextmenuWidth={140}
             contextmenuItems= {[{
@@ -180,49 +157,7 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
                 />
             )}
             {markers && markers.length > 0 && markers.map((marker) => (
-              <Marker
-                key={marker.id}
-                position={marker.position}
-                icon={markerIcon}
-                eventHandlers={{add: (e) => {e.target.openPopup()}}}
-              >
-                <Popup className='popup-container' minWidth='300px'>
-                  {marker.isEditing ? (
-                    <div className='popup-inputs-container'>
-                      <label htmlFor='title-input' className='popup-label'>Add a title</label>
-                      <input
-                        className='title-input'
-                        id='title-input'
-                        type='text'
-                        placeholder='My trip to...'
-                        value={marker.title}
-                        onChange={(e) => handleInputChange(e, marker.id)}
-                      />
-                      <label htmlFor='image-import' className='popup-label'>Add an image</label>
-                      <input
-                        type='file'
-                        id='image-import'
-                        accept="image/png, image/jpeg"
-                        onChange={(e) => handleImageInput(e, marker.id)}
-                      />
-                      {marker.image ? <label htmlFor='image-import' className='image-import-btn'>{marker.image.name}</label> : (
-                          <label htmlFor='image-import' className='image-import-btn'><img className='upload-icon' src={uploadIcon}/>Choose a file...</label>
-                        )
-                      }
-                      <div className='popup-btn-container'>
-                        <button className='button popup-submit-btn' onClick={(e) => handlePopupSubmit(e, marker.id)}>Submit</button>
-                        <button className='button remove-marker-btn' onClick={() => removeMarker(marker.id)}>Remove Pin</button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <h3>{marker.title || 'No title'}</h3>
-                      {marker.image && <img className='popup-img' src={URL.createObjectURL(marker.image)} />}
-                      <button className='button remove-marker-btn' onClick={() => removeMarker(marker.id)}>Remove Pin</button>
-                    </div>
-                  )}
-                </Popup>
-              </Marker>
+              <MarkerComponent marker={marker} setMarkers={setMarkers} />
             ))}
         </MapContainer>
     )
