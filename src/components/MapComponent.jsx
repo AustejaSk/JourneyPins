@@ -121,7 +121,7 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
         position: [e.latlng.lat, e.latlng.lng],
         title: '',
         image: null,
-        isEditing: true
+        isEditing: true,
       }
       setMarkers((prevMarkers) => [...prevMarkers, newMarker])
     }
@@ -139,10 +139,24 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
             maxBoundsViscosity={1.0}
             contextmenu={true}
             contextmenuWidth={140}
-            contextmenuItems= {[{
-              text: 'Add a pin',
-              callback: addPin
-            }]}
+            contextmenuItems= {[
+              {text: '<strong>Choose Category</strong>',
+              callback: null,
+              disabled: true},
+              {text: `<i class="fa-solid fa-hotel"></i> Hotel`,
+              callback: addPin},
+              {text: `<i class="fas fa-utensils"></i> Restaurant`,
+              callback: addPin},
+              {text: `<i class="fas fa-landmark"></i> Museum`,
+              callback: addPin},
+              {text: `<i class="fa-solid fa-monument"></i> Landmark`,
+              callback: addPin},
+              {text: `<i class="fa-solid fa-person-hiking"></i> Hiking Spot`,
+              callback: addPin},
+              {text: `<i class="fa-solid fa-location-pin"></i> Not Specified`,
+              callback: addPin}
+
+          ]}
         >
             <TileLayer
                 url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
