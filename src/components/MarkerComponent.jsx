@@ -1,14 +1,25 @@
 import React from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import pinIcon from '../assets/pin-icon.png'
+import hotelPin from '../assets/hotel-pin.png'
 import uploadIcon from '../assets/upload-icon.png'
 
 const MarkerComponent = ({ marker, setMarkers }) => {
 
-    const markerIcon = L.icon({
-        iconUrl: pinIcon,
-        iconSize: [35, 35]
-      })
+    const markerIcon = () => {
+        if (marker.category === 'hotel') {
+            return L.icon({
+                iconUrl: hotelPin,
+                iconSize: [40, 40]
+            })
+        }
+        if (marker.category === 'other') {
+            return L.icon({
+                iconUrl: pinIcon,
+                iconSize: [35, 35]
+            })
+        }
+    }
 
     const handleInputChange = (e, id) => {
     setMarkers(prevMarkers => 
@@ -43,7 +54,7 @@ const MarkerComponent = ({ marker, setMarkers }) => {
         <Marker
             key={marker.id}
             position={marker.position}
-            icon={markerIcon}
+            icon={markerIcon()}
             eventHandlers={{add: (e) => {e.target.openPopup()}}}
             >
             <Popup className='popup-container' minWidth='300px'>

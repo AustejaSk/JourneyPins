@@ -164,6 +164,7 @@ main {
 
 .map {
   width: 70%;
+  user-select: none;
 
   @include respond-to(mobile) {
     width: 100%;

@@ -115,13 +115,14 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
 
     // Callback for contextmenuItems that adds a marker to the map.
 
-    const addPin = (e) => {
+    const addPin = (e, catogory) => {
       const newMarker = {
         id: Date.now(),
         position: [e.latlng.lat, e.latlng.lng],
         title: '',
         image: null,
         isEditing: true,
+        category: catogory
       }
       setMarkers((prevMarkers) => [...prevMarkers, newMarker])
     }
@@ -144,18 +145,17 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
               callback: null,
               disabled: true},
               {text: `<i class="fa-solid fa-hotel"></i> Hotel`,
-              callback: addPin},
+              callback: (e) => addPin(e, 'hotel')},
               {text: `<i class="fas fa-utensils"></i> Restaurant`,
-              callback: addPin},
+              callback: (e) => addPin(e, 'restaurant')},
               {text: `<i class="fas fa-landmark"></i> Museum`,
-              callback: addPin},
+              callback: (e) => addPin(e, 'museum')},
               {text: `<i class="fa-solid fa-monument"></i> Landmark`,
-              callback: addPin},
+              callback: (e) => addPin(e, 'landmark')},
               {text: `<i class="fa-solid fa-person-hiking"></i> Hiking Spot`,
-              callback: addPin},
-              {text: `<i class="fa-solid fa-location-pin"></i> Not Specified`,
-              callback: addPin}
-
+              callback: (e) => addPin(e, 'hiking')},
+              {text: `<i class="fa-solid fa-location-pin"></i> Other`,
+              callback: (e) => addPin(e, 'other')}
           ]}
         >
             <TileLayer
