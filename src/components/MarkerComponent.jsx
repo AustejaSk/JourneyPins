@@ -1,7 +1,13 @@
 import React from 'react'
 import { Marker, Popup } from 'react-leaflet'
+
 import pinIcon from '../assets/pin-icon.png'
 import hotelPin from '../assets/hotel-pin.png'
+import restaurantPin from '../assets/restaurant-pin.png'
+import museumPin from '../assets/museum-pin.png'
+import landmarkPin from '../assets/landmark-pin.png'
+import hikingPin from '../assets/hiking-pin.png'
+
 import uploadIcon from '../assets/upload-icon.png'
 
 const MarkerComponent = ({ marker, setMarkers }) => {
@@ -13,6 +19,35 @@ const MarkerComponent = ({ marker, setMarkers }) => {
                 iconSize: [40, 40]
             })
         }
+
+        if (marker.category === 'restaurant') {
+            return L.icon({
+                iconUrl: restaurantPin,
+                iconSize: [35, 35]
+            })
+        }
+
+        if (marker.category === 'museum') {
+            return L.icon({
+                iconUrl: museumPin,
+                iconSize: [40, 40]
+            })
+        }
+
+        if (marker.category === 'landmark') {
+            return L.icon({
+                iconUrl: landmarkPin,
+                iconSize: [40, 40]
+            })
+        }
+
+        if (marker.category === 'hiking') {
+            return L.icon({
+                iconUrl: hikingPin,
+                iconSize: [40, 40]
+            })
+        }
+
         if (marker.category === 'other') {
             return L.icon({
                 iconUrl: pinIcon,
@@ -65,7 +100,7 @@ const MarkerComponent = ({ marker, setMarkers }) => {
                     className='title-input'
                     id='title-input'
                     type='text'
-                    placeholder='My trip to...'
+                    placeholder='Epic View Hike'
                     value={marker.title}
                     onChange={(e) => handleInputChange(e, marker.id)}
                     />

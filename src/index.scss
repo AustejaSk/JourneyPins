@@ -7,6 +7,8 @@ $primary-color: #265e60;
 $white-color: #FEFFFE;
 $black-color: #131313;
 $mobile-breakpoint: 480px;
+$tablet-breakpoint: 760px;
+$desktop-breakpoint: 1100px;
 
 
 @mixin flex-center($flex-drection: row) {
@@ -41,9 +43,18 @@ $mobile-breakpoint: 480px;
 }
 
 @mixin respond-to($media) {
-  @if $media == mobile {
-    @media (max-width: $mobile-breakpoint) {
-      @content;
+
+  @each $m in $media {
+    @if $m == mobile {
+      @media (max-width: $mobile-breakpoint) {
+        @content;
+      }
+    }
+  
+    @if $m == tablet {
+      @media (min-width: $tablet-breakpoint) and (max-width: $desktop-breakpoint) {
+        @content;
+      }
     }
   }
 }
@@ -69,7 +80,14 @@ header {
   @include flex-center(row);
 
   @include respond-to(mobile) {
+    position: relative;
     padding: 30px 16px;
+  }
+
+  @include respond-to(tablet) {
+    height: 90px;
+    position: relative;
+    padding: 30px 32px;
   }
 }
 
@@ -78,21 +96,21 @@ header {
   flex-direction: column;
   gap: 7px;
 
-  @include respond-to(mobile) {
+  @include respond-to((mobile, tablet)) {
     display: flex;
     margin-right: auto;
   }
 }
 
 .open {
-  @include respond-to(mobile) {
+  @include respond-to((mobile, tablet)) {
     display: flex;
     flex-direction: column;
   }
 }
 
 .closed {
-  @include respond-to(mobile) {
+  @include respond-to((mobile, tablet)) {
     display: none;
   }
 }
@@ -111,8 +129,12 @@ header {
 .logo {
   @include flex-center;
 
-  @include respond-to(mobile) {
-    margin: 0 auto;
+  @include respond-to((mobile, tablet)) {
+    width: max-content;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   p {
@@ -166,9 +188,8 @@ main {
   width: 70%;
   user-select: none;
 
-  @include respond-to(mobile) {
+  @include respond-to((mobile, tablet)) {
     width: 100%;
-    height: 100vh;
   }
 }
 
@@ -217,6 +238,16 @@ main {
     width: 80%;
     padding: 1em;
   }
+
+  @include respond-to(tablet) {
+    position: absolute;
+    top: 90px;
+    left: 0;
+    height: calc(100% - 90px);
+    z-index: 9999;
+    width: 50%;
+    padding: 1em;
+  }
 }
 
 
@@ -244,7 +275,7 @@ main {
   height: 35px;
   border-radius: 5px;
 
-  @include respond-to(mobile) {
+  @include respond-to((mobile, tablet)) {
     width: 100%;
     height: 50px;
   }
@@ -276,7 +307,7 @@ label, .label {
 
 .button {
   @include button($primary-color);
-  @include respond-to(mobile) {
+  @include respond-to((mobile, tablet)) {
     width: 100%;
   }
 }
