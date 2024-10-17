@@ -1,0 +1,46 @@
+@mixin flex-center($flex-drection: row) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $flex-drection;
+}
+  
+@mixin button($bg-color) {
+    width: fit-content;
+    padding: 0.8em 1.5em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    font-family: $font-stack;
+    background-color: $bg-color;
+    color: $white-color;
+
+    &:hover, &:focus {
+        background-color: darken($bg-color, 5%);
+    }
+}
+  
+@mixin smallButton($bg-color) {
+    @include button($bg-color);
+    font-size: 0.9rem;
+    padding: 0.6em 1em;
+}
+  
+@mixin respond-to($media) {
+    @each $m in $media {
+        @if $m == mobile {
+            @media (max-width: $mobile-breakpoint) {
+                @content;
+            }
+        }
+
+        @if $m == tablet {
+            @media (min-width: $tablet-breakpoint) and (max-width: $desktop-breakpoint) {
+                @content;
+            }
+        }
+    }
+}

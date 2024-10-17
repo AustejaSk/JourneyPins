@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-contextmenu/dist/leaflet.contextmenu.css'
 import 'leaflet-contextmenu'

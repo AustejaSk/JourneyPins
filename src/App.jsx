@@ -1,10 +1,12 @@
-import React, {useState, useEffect} from "react"
+import React, { useState } from "react"
+
+import Login from './components/Login'
 import MapComponent from "./components/MapComponent"
 import Header from './components/Header'
 import ControlPanel from "./components/ControlPanel"
 
 function App() {
-
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
   const [mapColor, setMapColor] = useState('')
   const [addedCountry, setAddedCountry] = useState('')
   const [selectedCountries, setSelectedCountries] = useState([])
@@ -42,22 +44,27 @@ function App() {
     <div className="app">
       <Header isOpen={isOpen} setIsOpen={setIsOpen}/>
       <main>
-        <ControlPanel
-          getColorInput={getColor}
-          getAddedCountry={getCountry}
-          selectedCountries={selectedCountries}
-          countriesList={allCountries}
-          removeAllCountries={removeAllCountries}
-          isOpen={isOpen}
-        />
-        <MapComponent 
-          selectedColor={mapColor}
-          addedCountry={addedCountry}
-          getAllCountries={getAllCountries}
-          onAddCountry={handleAddCountry}
-          onRemoveCountry={handleRemoveCountry}
-          selectedCountries={selectedCountries}
-        />
+        {isUserLoggedIn ?
+          <>
+            <ControlPanel
+              getColorInput={getColor}
+              getAddedCountry={getCountry}
+              selectedCountries={selectedCountries}
+              countriesList={allCountries}
+              removeAllCountries={removeAllCountries}
+              isOpen={isOpen}
+              setIsUserLoggedIn={setIsUserLoggedIn}
+            />
+            <MapComponent 
+              selectedColor={mapColor}
+              addedCountry={addedCountry}
+              getAllCountries={getAllCountries}
+              onAddCountry={handleAddCountry}
+              onRemoveCountry={handleRemoveCountry}
+              selectedCountries={selectedCountries}
+            />
+          </>
+        : <Login setIsUserLoggedIn={setIsUserLoggedIn} /> }
       </main>
     </div>
   )

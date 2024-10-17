@@ -1,0 +1,98 @@
+@import 'variables';
+@import 'mixins';
+@import 'global';
+@import 'hamMenu';
+@import 'login';
+@import 'controlPanel';
+@import 'popup';
+
+.header {
+  background-color: $primary-color;
+  color: $white-color;
+  height: 70px;
+  @include flex-center(row);
+
+  &__logo {
+    @include flex-center;
+  
+    p {
+      font-family: "Nerko One", system-ui;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      margin: 0;
+      user-select: none;
+    }
+
+    @include respond-to((mobile, tablet)) {
+      width: max-content;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__earth-icon {
+    margin: 0 3px 0 -3px;
+    width: 35px;
+    height: 35px;
+    vertical-align: middle;
+  }
+
+  &__pin-icon {
+    width: 20px;
+    height: 20px;
+    margin-top: 5px;
+  }
+
+  @include respond-to(mobile) {
+    position: relative;
+    padding: 30px 16px;
+
+    &__logo {
+      p {
+        font-size: 1.7rem;
+      }
+    }
+
+    &__pin-icon {
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+    }
+
+    &__earth-icon {
+        width: 30px;
+        height: 30px;
+    }
+  }
+
+  @include respond-to(tablet) {
+    height: 90px;
+    position: relative;
+    padding: 30px 32px;
+  }
+}
+
+.map {
+  width: 70%;
+  user-select: none;
+
+  @include respond-to((mobile, tablet)) {
+    width: 100%;
+  }
+}
+
+.custom-tooltip {
+  background: $white-color;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.leaflet-interactive:focus {
+  outline: none;
+}

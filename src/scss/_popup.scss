@@ -1,0 +1,77 @@
+.popup-inputs-container {
+    @include flex-center(column);
+    align-items: stretch;
+    gap: 1em;
+    margin-bottom: 0.6em;
+}
+  
+.popup-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: $black-color;
+}
+  
+.title-input {
+    font-size: 0.9rem;
+    border: 2px solid #AAD3DF;
+    border-radius: 5px;
+    padding: 0.5em;
+    font-family: $font-stack;
+
+    &:focus {
+    outline: none;
+    border: 2px solid #53808e;
+    }
+}
+  
+[type="file"] {
+    height: 0;  
+    width: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+  
+[type="file"] + label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: $black-color;
+    border: 2px solid #AAD3DF;
+    padding: 0.5em;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+    border-color: #53808e;
+    }
+}
+  
+[type="file"]:focus + label {
+    border-color: #53808e;
+}
+  
+.upload-icon {
+    width: 12px;
+    height: auto;
+    margin-right: 5px;
+}
+  
+.popup-img {
+    width: 200px;
+    height: auto;
+}
+  
+.popup-btn-container {
+    @include flex-center(row);
+    gap: 0.5em;
+    width: 100%;
+}
+  
+.popup-submit-btn {
+    @include smallButton($primary-color);   
+}
+  
+.remove-marker-btn {
+    @include smallButton(#EB003F);
+    white-space: nowrap;
+}

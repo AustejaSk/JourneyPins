@@ -6,11 +6,11 @@ import pinIcon from '../assets/pin-icon.png'
 const Header = ({ isOpen, setIsOpen }) => {
 
     return (
-        <header>
+        <header className='header'>
             <Menu isOpen={isOpen} setIsOpen={setIsOpen}/>
-            <div className='logo'>
-                <p>J<span><img className='earth-icon' src={earthIcon} /></span>urneyPins</p>
-                <img className='pin-icon' src={pinIcon} />
+            <div className='header__logo'>
+                <p>J<span><img className='header__earth-icon' src={earthIcon} /></span>urneyPins</p>
+                <img className='header__pin-icon' src={pinIcon} />
             </div>
         </header>
     )

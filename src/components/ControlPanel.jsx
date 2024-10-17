@@ -1,6 +1,8 @@
 import React, {useState} from "react"
 
-const ControlPanel = ({ getColorInput, getAddedCountry, selectedCountries, countriesList, removeAllCountries, isOpen }) => {
+import { getAuth, signOut } from 'firebase/auth'
+
+const ControlPanel = ({ getColorInput, getAddedCountry, selectedCountries, countriesList, removeAllCountries, isOpen, setIsUserLoggedIn }) => {
 
     const [color, setColor] = useState('')
     const [country, setCountry] = useState('')
@@ -26,6 +28,15 @@ const ControlPanel = ({ getColorInput, getAddedCountry, selectedCountries, count
 
     const handleRemoveAllCountries = () => {
         removeAllCountries(selectedCountries)
+    }
+
+    const signOutUser = () => {
+        const auth = getAuth()
+        signOut(auth).then(() => {
+            setIsUserLoggedIn(false)
+        }).catch((error) => {
+            console.log(error)
+        })
     }
 
     return (
@@ -73,6 +84,10 @@ const ControlPanel = ({ getColorInput, getAddedCountry, selectedCountries, count
             <div className='stats-container'>
                 <h2>Stats</h2>
                 <p>Visited Countries: {selectedCountries.length}</p>
+            </div>
+            <div className="settings-container">
+                <h2>Settings</h2>
+                <button className='sign-out-btn' onClick={signOutUser}>Sign Out</button>
             </div>
         </div>
     )
