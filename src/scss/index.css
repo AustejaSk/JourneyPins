@@ -19,10 +19,11 @@ main {
   display: flex;
   flex-grow: 1;
   overflow: hidden;
+  max-height: calc(100vh - 80px);
 }
 @media (max-width: 480px) {
   main {
-    height: calc(100vh - 65px);
+    max-height: calc(100vh - 65px);
   }
 }
 
@@ -736,6 +737,11 @@ input#password {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+}
+@media (max-width: 480px) {
+  .map {
+    height: calc(100vh - 65px);
+  }
 }
 @media (max-width: 480px) {
   .map {
