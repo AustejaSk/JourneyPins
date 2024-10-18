@@ -20,6 +20,11 @@ main {
   flex-grow: 1;
   overflow: hidden;
 }
+@media (max-width: 480px) {
+  main {
+    height: calc(100vh - 65px);
+  }
+}
 
 h1 {
   font-size: 1.8rem;

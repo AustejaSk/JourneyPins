@@ -19,6 +19,10 @@ main {
     display: flex;
     flex-grow: 1;
     overflow: hidden;
+
+    @include respond-to(mobile) {
+        height: calc(100vh - 65px);
+    }
 }
 
 h1 {
