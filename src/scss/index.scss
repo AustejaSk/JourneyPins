@@ -78,7 +78,7 @@
   user-select: none;
 
   @include respond-to(mobile) {
-    height: calc(100vh - 65px);
+    height: calc(100dvh - 65px);
   }
 
   @include respond-to((mobile, tablet)) {

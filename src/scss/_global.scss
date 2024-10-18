@@ -19,10 +19,10 @@ main {
     display: flex;
     flex-grow: 1;
     overflow: hidden;
-    max-height: calc(100vh - 80px);
+    max-height: calc(100dvh - 80px);
 
     @include respond-to(mobile) {
-        max-height: calc(100vh - 65px);
+        max-height: calc(100dvh - 65px);
     }
 }
 
