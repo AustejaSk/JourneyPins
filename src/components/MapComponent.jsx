@@ -14,6 +14,8 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
     const selectedColorRef = useRef(selectedColor)
     const [markers, setMarkers] = useState([])
 
+    const customRenderer = L.svg({ padding: 0.4 });
+
 
     // Fetching countries from geoJson and saving them in a state. Calling getAllCountries with all country names from geoJson.
 
@@ -159,6 +161,7 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
                   onEachFeature={onEachCountry}
                   ref={geoJsonLayerRef}
                   style={geoJsonStyle}
+                  renderer={customRenderer}
                 />
             )}
             {markers && markers.length > 0 && markers.map((marker) => (

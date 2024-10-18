@@ -19,11 +19,7 @@ main {
     display: flex;
     flex-grow: 1;
     overflow: hidden;
-    height: calc(100dvh - 80px);
-
-    @include respond-to(mobile) {
-        height: calc(100dvh - 65px);
-    }
+    height: calc(100dvh - 65px);
 }
 
 h1 {

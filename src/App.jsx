@@ -111,7 +111,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header isOpen={isOpen} setIsOpen={setIsOpen}/>
+      <Header isOpen={isOpen} setIsOpen={setIsOpen} isUserLoggedIn={isUserLoggedIn} />
       <main>
         {isUserLoggedIn ?
           <>
