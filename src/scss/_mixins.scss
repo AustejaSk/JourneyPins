@@ -21,12 +21,20 @@
     &:hover, &:focus {
         background-color: darken($bg-color, 5%);
     }
+
+    @include respond-to(mobile) {
+        font-size: 0.95rem;
+    }
 }
   
 @mixin smallButton($bg-color) {
     @include button($bg-color);
     font-size: 0.9rem;
     padding: 0.6em 1em;
+
+    @include respond-to(mobile) {
+        font-size: 0.85rem;
+    }
 }
   
 @mixin respond-to($media) {
@@ -38,7 +46,7 @@
         }
 
         @if $m == tablet {
-            @media (min-width: $tablet-breakpoint) and (max-width: $desktop-breakpoint) {
+            @media (min-width: $mobile-breakpoint) and (max-width: $tablet-breakpoint) {
                 @content;
             }
         }

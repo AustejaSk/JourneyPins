@@ -35,12 +35,12 @@
   
     @include respond-to(tablet) {
       position: absolute;
-      top: 90px;
+      top: 80px;
       left: 0;
-      height: calc(100% - 90px);
+      height: calc(100% - 80px);
       z-index: 9999;
       width: 50%;
-      padding: 1em;
+      padding: 2.5em 1.5em;
     }
 }
   
@@ -56,19 +56,19 @@
     gap: 1em;
     width: 100%;
   
-    @include respond-to(mobile) {
+    @include respond-to((mobile, tablet)) {
       padding-bottom: 1em;
     }
 }
   
 .map-color-input {
-    width: 20%;
-    height: 35px;
+    width: 100%;
+    height: 45px;
     border-radius: 5px;
   
     @include respond-to((mobile, tablet)) {
       width: 100%;
-      height: 50px;
+      height: 45px;
     }
 }
   
@@ -81,13 +81,17 @@
 .stats-container {
     margin-top: 4em;
   
-    @include respond-to(mobile) {
-      margin-top: 2em;
+    @include respond-to((mobile, tablet)) {
+      margin-top: 1em;
     }
 }
   
 .settings-container {
     margin-top: 2em;
+
+    @include respond-to((mobile, tablet)) {
+      margin-top: 1em;
+    }
 }
 
 .sign-out-btn {

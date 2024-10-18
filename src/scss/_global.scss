@@ -42,4 +42,8 @@ label, .label {
     font-size: 1.1rem;
     font-weight: 400;
     font-family: $font-stack;
+
+    @include respond-to(mobile) {
+        font-size: 1rem;
+    }
 }

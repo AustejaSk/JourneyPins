@@ -31,5 +31,14 @@
     &:nth-child(2) {
       width: 20px;
     }
+
+    @include respond-to(mobile) {
+      height: 3px;
+      width: 26px;
+
+      &:nth-child(2) {
+        width: 18px;
+      }
+    }
 }
   

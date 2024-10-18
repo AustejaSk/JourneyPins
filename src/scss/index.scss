@@ -9,7 +9,7 @@
 .header {
   background-color: $primary-color;
   color: $white-color;
-  height: 70px;
+  height: 80px;
   @include flex-center(row);
 
   &__logo {
@@ -17,9 +17,10 @@
   
     p {
       font-family: "Nerko One", system-ui;
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       letter-spacing: 0.25em;
+      line-height: 0.9em;
       margin: 0;
       user-select: none;
     }
@@ -35,15 +36,14 @@
 
   &__earth-icon {
     margin: 0 3px 0 -3px;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     vertical-align: middle;
   }
 
   &__pin-icon {
-    width: 20px;
-    height: 20px;
-    margin-top: 5px;
+    width: 18px;
+    height: 18px;
   }
 
   @include respond-to(mobile) {
@@ -52,24 +52,22 @@
 
     &__logo {
       p {
-        font-size: 1.7rem;
+        font-size: 1.4rem;
       }
     }
 
     &__pin-icon {
-        width: 18px;
-        height: 18px;
-        margin-top: 2px;
+        width: 15px;
+        height: 15px;
     }
 
     &__earth-icon {
-        width: 30px;
-        height: 30px;
+        width: 22px;
+        height: 22px;
     }
   }
 
   @include respond-to(tablet) {
-    height: 90px;
     position: relative;
     padding: 30px 32px;
   }

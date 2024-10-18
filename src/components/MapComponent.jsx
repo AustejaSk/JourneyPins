@@ -89,28 +89,19 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
       fillOpacity: 0.5
     }
 
-    useEffect(() => {
-      selectedColorRef.current = selectedColor || "#348285"
+    const geoJsonStyle = (feature) => {
+      const countryName = feature.properties.ADMIN.toLowerCase()
 
-      if (geoJsonLayerRef.current) {
-
-        geoJsonLayerRef.current.eachLayer(layer => {
-
-          const countryName = layer.feature.properties.ADMIN.toLowerCase()
-
-          if (selectedCountries.includes(countryName)) {
-            layer.setStyle({
-              fillColor: selectedColorRef.current,
-              fillOpacity: 0.5,
-              color: 'none',
-              weight: '1'
-            })
-          } else {
-            layer.setStyle(defaultStyle)
-          }
-        })
+      if (selectedCountries.includes(countryName)) {
+        return {
+          fillColor: selectedColor || '#348285',
+          color: 'none',
+          fillOpacity: 0.5,
+          weight: 1
+        }
       }
-    }, [selectedColor, selectedCountries, markers])
+      return defaultStyle
+    }
 
 
     // Callback for contextmenuItems that adds a marker to the map.
@@ -167,7 +158,7 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
                   data={geoJSONData}
                   onEachFeature={onEachCountry}
                   ref={geoJsonLayerRef}
-                  style={defaultStyle}
+                  style={geoJsonStyle}
                 />
             )}
             {markers && markers.length > 0 && markers.map((marker) => (

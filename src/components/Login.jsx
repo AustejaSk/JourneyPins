@@ -1,6 +1,13 @@
 import React, { useState } from "react"
 import { app } from '../firebase'
-import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth"
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    updateProfile,
+    signInWithEmailAndPassword,
+    sendEmailVerification,
+    sendPasswordResetEmail
+} from "firebase/auth"
 
 import earthIcon from '../assets/earth-icon.png'
 import passwordVisible from '../assets/password-visible.png'
@@ -14,6 +21,7 @@ const Login = ({ setIsUserLoggedIn }) => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState({type: '', text: ''})
     const [showResendButton, setShowResendButton] = useState(false)
+    const [showResetPassword, setShowResetPassword] = useState(false)
     const [currentUser, setCurrentUser] = useState(null)
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
@@ -51,6 +59,7 @@ const Login = ({ setIsUserLoggedIn }) => {
         e.preventDefault()
         const auth = getAuth()
         try {
+
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             const user = userCredential.user
 
@@ -59,6 +68,7 @@ const Login = ({ setIsUserLoggedIn }) => {
                 setShowResendButton(true)
                 setCurrentUser(user)
                 await auth.signOut()
+                setIsUserLoggedIn(false)
             } else {
                 setMessage({type: 'success', text: 'Signed in successfully!'})
                 setShowResendButton(false)
@@ -126,12 +136,14 @@ const Login = ({ setIsUserLoggedIn }) => {
             clearFormFields()
             setIsPasswordVisible(false)
             setCreateAccount(false)
+            setShowResetPassword(true)
         } else {
             setShowResendButton(false)
             setMessage('')
             clearFormFields()
             setIsPasswordVisible(false)
             setCreateAccount(true)
+            setShowResetPassword(false)
         }
     }
         
@@ -275,7 +287,7 @@ const Login = ({ setIsUserLoggedIn }) => {
                     {showResendButton ? (
                         <button className="resendVerification-btn" onClick={handleResendVerification}>Resend verification email</button>
                     ) : 
-                    email && (
+                    email && showResetPassword && (
                         <button className='resetPassword-btn' onClick={handleResetPassword}>Reset password</button>
                     )}
                     <button className="createAccount-btn" onClick={handleCreateAccountBtn}>{createAccount ? 'Sign in' : 'Create new account'}</button>

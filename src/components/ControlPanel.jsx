@@ -2,9 +2,18 @@ import React, {useState} from "react"
 
 import { getAuth, signOut } from 'firebase/auth'
 
-const ControlPanel = ({ getColorInput, getAddedCountry, selectedCountries, countriesList, removeAllCountries, isOpen, setIsUserLoggedIn }) => {
+const ControlPanel = ({ 
+    color,
+    getColorInput,
+    getColorSelectComplete,
+    getAddedCountry, 
+    selectedCountries,
+    countriesList,
+    removeAllCountries,
+    isOpen,
+    setIsUserLoggedIn
+    }) => {
 
-    const [color, setColor] = useState('')
     const [country, setCountry] = useState('')
     const [message, setMessage] = useState('')
 
@@ -51,8 +60,10 @@ const ControlPanel = ({ getColorInput, getAddedCountry, selectedCountries, count
                         type='color'
                         value={color || '#348285'}
                         onChange={(e) => {
-                            setColor(e.target.value)
-                            getColorInput(color)
+                            getColorInput(e.target.value)
+                        }}
+                        onBlur={(e) => {
+                            getColorSelectComplete(e.target.value)
                         }}
                     />
                 </div>

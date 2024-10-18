@@ -50,10 +50,15 @@ h1 {
 }
 @media (max-width: 480px) {
   .button {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 480px) {
+  .button {
     width: 100%;
   }
 }
-@media (min-width: 760px) and (max-width: 1100px) {
+@media (min-width: 480px) and (max-width: 990px) {
   .button {
     width: 100%;
   }
@@ -64,6 +69,11 @@ label, .label {
   font-size: 1.1rem;
   font-weight: 400;
   font-family: "Finlandica", sans-serif;
+}
+@media (max-width: 480px) {
+  label, .label {
+    font-size: 1rem;
+  }
 }
 
 .menu {
@@ -77,7 +87,7 @@ label, .label {
     margin-right: auto;
   }
 }
-@media (min-width: 760px) and (max-width: 1100px) {
+@media (min-width: 480px) and (max-width: 990px) {
   .menu {
     display: flex;
     margin-right: auto;
@@ -90,7 +100,7 @@ label, .label {
     flex-direction: column;
   }
 }
-@media (min-width: 760px) and (max-width: 1100px) {
+@media (min-width: 480px) and (max-width: 990px) {
   .open {
     display: flex;
     flex-direction: column;
@@ -102,7 +112,7 @@ label, .label {
     display: none;
   }
 }
-@media (min-width: 760px) and (max-width: 1100px) {
+@media (min-width: 480px) and (max-width: 990px) {
   .closed {
     display: none;
   }
@@ -116,6 +126,15 @@ label, .label {
 }
 .menu-line:nth-child(2) {
   width: 20px;
+}
+@media (max-width: 480px) {
+  .menu-line {
+    height: 3px;
+    width: 26px;
+  }
+  .menu-line:nth-child(2) {
+    width: 18px;
+  }
 }
 
 .login {
@@ -136,6 +155,30 @@ label, .label {
   padding: 48px;
   border-radius: 5px;
   box-shadow: 0 0 50px rgba(70, 70, 70, 0.3);
+  min-width: 600px;
+}
+@media (max-width: 480px) {
+  .login {
+    background-size: cover;
+  }
+  .login__card {
+    width: 90%;
+    min-width: 300px;
+    max-width: 450px;
+    padding: 32px 24px;
+    margin: 16px 16px;
+    overflow-y: scroll;
+  }
+}
+@media (min-width: 480px) and (max-width: 990px) {
+  .login {
+    background-size: cover;
+  }
+  .login__card {
+    width: 80%;
+    min-width: 500px;
+    max-width: 600px;
+  }
 }
 
 .loginGreeting {
@@ -149,7 +192,7 @@ label, .label {
   align-items: center;
   gap: 10px;
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 .loginGreeting h2 {
   margin: 22px 0 0;
@@ -161,6 +204,25 @@ label, .label {
 .loginGreeting img {
   width: 50px;
   height: auto;
+}
+@media (max-width: 480px) {
+  .loginGreeting h1 {
+    font-size: 1.3rem;
+  }
+  .loginGreeting h2 {
+    font-size: 1rem;
+  }
+  .loginGreeting img {
+    width: 25px;
+  }
+}
+@media (min-width: 480px) and (max-width: 990px) {
+  .loginGreeting h1 {
+    font-size: 1.6rem;
+  }
+  .loginGreeting img {
+    width: 40px;
+  }
 }
 
 .loginForm {
@@ -207,6 +269,11 @@ label, .label {
 .loginForm__btn:hover, .loginForm__btn:focus {
   background-color: #1f4c4e;
 }
+@media (max-width: 480px) {
+  .loginForm__btn {
+    font-size: 0.95rem;
+  }
+}
 
 .createAccount-btn {
   background: none;
@@ -235,6 +302,14 @@ label, .label {
 .signupForm__btn {
   margin-top: 0;
   grid-column: span 2;
+}
+@media (max-width: 480px) {
+  .signupForm {
+    grid-template-columns: 1fr;
+  }
+  .signupForm__btn {
+    grid-column: span 1;
+  }
 }
 
 .message {
@@ -321,15 +396,15 @@ input#password {
     padding: 1em;
   }
 }
-@media (min-width: 760px) and (max-width: 1100px) {
+@media (min-width: 480px) and (max-width: 990px) {
   .control-panel {
     position: absolute;
-    top: 90px;
+    top: 80px;
     left: 0;
-    height: calc(100% - 90px);
+    height: calc(100% - 80px);
     z-index: 9999;
     width: 50%;
-    padding: 1em;
+    padding: 2.5em 1.5em;
   }
 }
 
@@ -356,22 +431,27 @@ input#password {
     padding-bottom: 1em;
   }
 }
+@media (min-width: 480px) and (max-width: 990px) {
+  .controls-option {
+    padding-bottom: 1em;
+  }
+}
 
 .map-color-input {
-  width: 20%;
-  height: 35px;
+  width: 100%;
+  height: 45px;
   border-radius: 5px;
 }
 @media (max-width: 480px) {
   .map-color-input {
     width: 100%;
-    height: 50px;
+    height: 45px;
   }
 }
-@media (min-width: 760px) and (max-width: 1100px) {
+@media (min-width: 480px) and (max-width: 990px) {
   .map-color-input {
     width: 100%;
-    height: 50px;
+    height: 45px;
   }
 }
 
@@ -386,12 +466,27 @@ input#password {
 }
 @media (max-width: 480px) {
   .stats-container {
-    margin-top: 2em;
+    margin-top: 1em;
+  }
+}
+@media (min-width: 480px) and (max-width: 990px) {
+  .stats-container {
+    margin-top: 1em;
   }
 }
 
 .settings-container {
   margin-top: 2em;
+}
+@media (max-width: 480px) {
+  .settings-container {
+    margin-top: 1em;
+  }
+}
+@media (min-width: 480px) and (max-width: 990px) {
+  .settings-container {
+    margin-top: 1em;
+  }
 }
 
 .sign-out-btn {
@@ -413,6 +508,16 @@ input#password {
 }
 .sign-out-btn:hover, .sign-out-btn:focus {
   background-color: #e5ffe5;
+}
+@media (max-width: 480px) {
+  .sign-out-btn {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 480px) {
+  .sign-out-btn {
+    font-size: 0.85rem;
+  }
 }
 
 .popup-inputs-container {
@@ -507,6 +612,16 @@ input#password {
 .popup-submit-btn:hover, .popup-submit-btn:focus {
   background-color: #1f4c4e;
 }
+@media (max-width: 480px) {
+  .popup-submit-btn {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 480px) {
+  .popup-submit-btn {
+    font-size: 0.85rem;
+  }
+}
 
 .remove-marker-btn {
   width: -moz-fit-content;
@@ -528,11 +643,21 @@ input#password {
 .remove-marker-btn:hover, .remove-marker-btn:focus {
   background-color: #d20038;
 }
+@media (max-width: 480px) {
+  .remove-marker-btn {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 480px) {
+  .remove-marker-btn {
+    font-size: 0.85rem;
+  }
+}
 
 .header {
   background-color: #265e60;
   color: #FEFFFE;
-  height: 70px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -546,9 +671,10 @@ input#password {
 }
 .header__logo p {
   font-family: "Nerko One", system-ui;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   letter-spacing: 0.25em;
+  line-height: 0.9em;
   margin: 0;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -564,7 +690,7 @@ input#password {
     transform: translate(-50%, -50%);
   }
 }
-@media (min-width: 760px) and (max-width: 1100px) {
+@media (min-width: 480px) and (max-width: 990px) {
   .header__logo {
     width: -moz-max-content;
     width: max-content;
@@ -576,14 +702,13 @@ input#password {
 }
 .header__earth-icon {
   margin: 0 3px 0 -3px;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   vertical-align: middle;
 }
 .header__pin-icon {
-  width: 20px;
-  height: 20px;
-  margin-top: 5px;
+  width: 18px;
+  height: 18px;
 }
 @media (max-width: 480px) {
   .header {
@@ -591,21 +716,19 @@ input#password {
     padding: 30px 16px;
   }
   .header__logo p {
-    font-size: 1.7rem;
+    font-size: 1.4rem;
   }
   .header__pin-icon {
-    width: 18px;
-    height: 18px;
-    margin-top: 2px;
+    width: 15px;
+    height: 15px;
   }
   .header__earth-icon {
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
   }
 }
-@media (min-width: 760px) and (max-width: 1100px) {
+@media (min-width: 480px) and (max-width: 990px) {
   .header {
-    height: 90px;
     position: relative;
     padding: 30px 32px;
   }
@@ -622,7 +745,7 @@ input#password {
     width: 100%;
   }
 }
-@media (min-width: 760px) and (max-width: 1100px) {
+@media (min-width: 480px) and (max-width: 990px) {
   .map {
     width: 100%;
   }
