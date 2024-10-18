@@ -10,7 +10,7 @@ body {
 }
 
 .app {
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
 }
@@ -19,10 +19,10 @@ main {
     display: flex;
     flex-grow: 1;
     overflow: hidden;
-    max-height: calc(100dvh - 80px);
+    height: calc(100dvh - 80px);
 
     @include respond-to(mobile) {
-        max-height: calc(100dvh - 65px);
+        height: calc(100dvh - 65px);
     }
 }
 

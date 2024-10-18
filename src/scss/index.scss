@@ -75,11 +75,8 @@
 
 .map {
   width: 70%;
+  height: 100%;
   user-select: none;
-
-  @include respond-to(mobile) {
-    height: calc(100dvh - 65px);
-  }
 
   @include respond-to((mobile, tablet)) {
     width: 100%;

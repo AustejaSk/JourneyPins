@@ -10,7 +10,7 @@ body {
 }
 
 .app {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -19,11 +19,11 @@ main {
   display: flex;
   flex-grow: 1;
   overflow: hidden;
-  max-height: calc(100dvh - 80px);
+  height: calc(100dvh - 80px);
 }
 @media (max-width: 480px) {
   main {
-    max-height: calc(100dvh - 65px);
+    height: calc(100dvh - 65px);
   }
 }
 
@@ -734,14 +734,10 @@ input#password {
 
 .map {
   width: 70%;
+  height: 100%;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
-}
-@media (max-width: 480px) {
-  .map {
-    height: calc(100dvh - 65px);
-  }
 }
 @media (max-width: 480px) {
   .map {
