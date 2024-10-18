@@ -2,6 +2,7 @@
     display: none;
     flex-direction: column;
     gap: 7px;
+    padding: 0 16px;
   
     @include respond-to((mobile, tablet)) {
       display: flex;

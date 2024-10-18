@@ -136,6 +136,7 @@
     font-family: inherit;
     font-size: 1rem;
     font-weight: 500;
+    color: $black-color;
     cursor: pointer;
 
     &:hover, &:focus {
@@ -178,11 +179,11 @@
 }
 
 .message.error{
-    color: red;
+    color: rgb(201, 0, 54);
 }
 
 .message.success {
-    color: green;
+    color: rgb(56, 157, 56);
 }
 
 .resendVerification-btn, .resetPassword-btn {
@@ -192,6 +193,7 @@
     text-decoration: underline;
     font-size: 0.9rem;
     font-weight: 500;
+    color: $black-color;
     cursor: pointer;
 }
 

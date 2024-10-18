@@ -47,8 +47,8 @@
   }
 
   @include respond-to(mobile) {
+    height: 65px;
     position: relative;
-    padding: 30px 16px;
 
     &__logo {
       p {
