@@ -78,6 +78,9 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
             clickTimeout.current = null
           }
           onRemoveCountry(countryName)
+          setGeoJSONData((prevData) => {
+            return { ...prevData }
+          })
         }
       })
     }
