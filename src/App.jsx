@@ -85,9 +85,9 @@ function App() {
   const handleAddCountry = (country) => {
     setSelectedCountries(prev => {
       if (!prev.includes(country)) {
-        const updatedCountires = [...prev, country]
-        saveSelectedCountriesToFirestore(updatedCountires)
-        return updatedCountires
+        const updatedCountries = [...prev, country]
+        saveSelectedCountriesToFirestore(updatedCountries)
+        return updatedCountries
       }
       return prev
     })
@@ -95,9 +95,9 @@ function App() {
 
   const handleRemoveCountry = (country) => {
     setSelectedCountries(prev => {
-      const updatedCountires = prev.filter(c => c !== country)
-      saveSelectedCountriesToFirestore(updatedCountires)
-      return updatedCountires
+      const updatedCountries = prev.filter(c => c !== country)
+      saveSelectedCountriesToFirestore(updatedCountries)
+      return updatedCountries
     })
   }
 
