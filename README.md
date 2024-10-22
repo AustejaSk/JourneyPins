@@ -13,13 +13,14 @@ JourneyPins is an interactive web app where users can visually track their trave
 9. [License](#license)
 
 ## Overview
-JourneyPins uses React Leaflet to offer users an interactive mapping experience. Users can mark the countries they’ve visited and add customizable pins to specific locations. Each pin can be categorized (e.g., landmarks, hiking spots, or museums) and personalized with a unique title and image. Currently, the app does not persist data, so marked countries and pins will reset upon refresh. Future updates will introduce data storage capabilities.
+JourneyPins uses React Leaflet to offer users an interactive mapping experience. Users can mark the countries they’ve visited and add customizable pins to specific locations. Each pin can be categorized (e.g., landmarks, hiking spots, or museums) and personalized with a unique title and image. Users can create an account and log in with email and password. Data saving is still under development, so added pins will reset upon refresh.
 
 ## Technologies
 - **React**: Used for building the user interface of the application.
 - **React Leaflet**: Used to integrate an interactive map into the app.
 - **SCSS**: Used for styling the application with nested rules and variables.
 - **Vite**: Used as a build tool for a fast and efficient development environment.
+- **Firebase**: Used for authentication and data storage.
 
 ## Features
 - **Mark countries**: Users can mark countries they have visited on a world map by directly clicking on the country or typing its name into the control panel. They can also choose any color they want for marked countries to customize the map.
@@ -47,13 +48,13 @@ JourneyPins uses React Leaflet to offer users an interactive mapping experience.
    ```
 
 ## Usage
-1. Open the app and start exploring the world map.
+1. Open the app, sign in, or create a new account and start exploring the world map.
 2. **Mark countries** by clicking on a country you’ve visited or by using the control panel on the left side to add a country by name.
 3. **Remove countries** by double-clicking on the country on the map, or use the "Remove All Countries" button in the control panel to clear all selected countries from the map.
 4. **Choose a custom color for your map** using the color picker in the control panel, the color updates in real-time.
 5. **Add pins** to specific locations by right-clicking anywhere on the map and selecting a category from the menu.
 6. For each pin, add a custom **title** and upload an image by selecting a file from your device.
-7. Enjoy visualizing your travels! *(Note: Data is currently not persisted, so it will reset upon page refresh.)*
+7. Enjoy visualizing your travels! *(Note: Data saving is still under development, so added pins will reset upon page refresh.)*
 
 ## Login Details for Testing
 To log in and test JourneyPins features, use the following credentials:
