@@ -46,7 +46,7 @@ function App() {
       }
     })
     return () => unsubscribe()
-  }, [db])
+  }, [])
 
   const getCountry = (country) => {
     setAddedCountry(country)
@@ -58,7 +58,7 @@ function App() {
         const userDocRef = doc(db, 'users', currentUser.uid)
         await setDoc(userDocRef, { selectedCountries: countries }, { merge: true })
       } catch (error) {
-        console.error('Error saving selected countires: ', error)
+        console.error('Error saving selected countries: ', error)
       }
     }
   }
@@ -83,32 +83,37 @@ function App() {
   }
   
   const handleAddCountry = (country) => {
-    setSelectedCountries(prev => {
-      if (!prev.includes(country)) {
-        const updatedCountries = [...prev, country]
-        saveSelectedCountriesToFirestore(updatedCountries)
-        return updatedCountries
-      }
-      return prev
-    })
+    if (currentUser) {
+      setSelectedCountries(prev => {
+        if (!prev.includes(country)) {
+          const updatedCountries = [...prev, country]
+          saveSelectedCountriesToFirestore(updatedCountries)
+          return updatedCountries
+        }
+        return prev
+      })
+    }
   }
 
   const handleRemoveCountry = (country) => {
-    setSelectedCountries(prev => {
-      const updatedCountries = prev.filter(c => c !== country)
-      saveSelectedCountriesToFirestore(updatedCountries)
-      return updatedCountries
-    })
+    if (currentUser) {
+      setSelectedCountries(prev => {
+        const updatedCountries = prev.filter(c => c !== country)
+        saveSelectedCountriesToFirestore(updatedCountries)
+        return updatedCountries
+      })
+    }
   }
 
   const getAllCountries = (list) => {
     setAllCountries(list)
   }
 
-  const removeAllCountries = (countries) => {
-    countries.forEach(country => {
-      handleRemoveCountry(country)
-    })
+  const removeAllCountries = () => {
+    if (currentUser) {
+      setSelectedCountries([])
+      saveSelectedCountriesToFirestore([])
+    }
   }
 
 
@@ -119,9 +124,9 @@ function App() {
         {isUserLoggedIn ?
           <>
             <ControlPanel
+              color={mapColor}
               getColorInput={handleColorChange}
               getColorSelectComplete={handleColorSelectComplete}
-              color={mapColor}
               getAddedCountry={getCountry}
               selectedCountries={selectedCountries}
               countriesList={allCountries}
@@ -136,6 +141,8 @@ function App() {
               onAddCountry={handleAddCountry}
               onRemoveCountry={handleRemoveCountry}
               selectedCountries={selectedCountries}
+              currentUser={currentUser}
+              db={db}
             />
           </>
         : <Login setIsUserLoggedIn={setIsUserLoggedIn} /> }
