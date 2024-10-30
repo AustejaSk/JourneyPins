@@ -136,6 +136,8 @@ function App() {
               onAddCountry={handleAddCountry}
               onRemoveCountry={handleRemoveCountry}
               selectedCountries={selectedCountries}
+              currentUser={currentUser}
+              db={db}
             />
           </>
         : <Login setIsUserLoggedIn={setIsUserLoggedIn} /> }

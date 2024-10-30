@@ -4,9 +4,10 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet-contextmenu/dist/leaflet.contextmenu.css'
 import 'leaflet-contextmenu'
 import MarkerComponent from './MarkerComponent'
+import { doc, setDoc, getDoc } from "firebase/firestore"
 
 
-const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCountry, onRemoveCountry, getAllCountries }) => {
+const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCountry, onRemoveCountry, getAllCountries, currentUser, db }) => {
     const center = [0, 0]
     const maxBounds = [[-90, -180], [90, 180]]
     const [geoJSONData, setGeoJSONData] = useState(null)
@@ -30,8 +31,19 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
         .catch(error => console.error('Error fetching GeoJSON:', error))
     }, [])
 
-
-    // Adding country from the input field if it isn't selected on the map yet.
+    useEffect(() => {
+      const loadMarkers = async () => {
+        if (currentUser) {
+          const userDocRef = doc(db, 'users', currentUser.uid)
+          const userDoc = await getDoc(userDocRef)
+          if (userDoc.exists()) {
+            const data = userDoc.data()
+            setMarkers(data.markers || [])
+          }
+        }
+      }
+      loadMarkers()
+    }, [currentUser, db])
 
     useEffect(() => {
       if (addedCountry) {
@@ -40,9 +52,7 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
         }
       }
     }, [addedCountry])
-    
 
-    // Adding toolip that shows country name and click and dbclick events for each layer.
 
     const clickTimeout = useRef(null)
 
@@ -83,8 +93,6 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
     }
 
 
-    // Setting color for each layer on the map based on if the layer is in the selectedCountries array or not.
-
     const defaultStyle = {
       fillColor: '#FFFFFF',
       color: 'none',
@@ -106,9 +114,7 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
     }
 
 
-    // Callback for contextmenuItems that adds a marker to the map.
-
-    const addPin = (e, catogory) => {
+    const addMarker = (e, catogory) => {
       const newMarker = {
         id: Date.now(),
         position: [e.latlng.lat, e.latlng.lng],
@@ -117,7 +123,50 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
         isEditing: true,
         category: catogory
       }
-      setMarkers((prevMarkers) => [...prevMarkers, newMarker])
+      setMarkers(prevMarkers => {
+        const updatedMarkers = [...prevMarkers, newMarker]
+        saveMarkersToFirestore(updatedMarkers)
+        return updatedMarkers
+      })
+    }
+
+    const removeMarker = (markerId) => {
+      setMarkers(prevMarkers => {
+        const updatedMarkers = prevMarkers.filter(marker => markerId !== marker.id)
+        saveMarkersToFirestore(updatedMarkers)
+        return updatedMarkers
+      })
+    }
+
+    const handleMarkerTitleChange = (markerId, newTitle) => {
+      setMarkers(prevMarkers => {
+        const updatedMarkers = prevMarkers.map(marker =>
+          marker.id === markerId ? { ...marker, title: newTitle } : marker
+        )
+        saveMarkersToFirestore(updatedMarkers)
+        return updatedMarkers
+      })
+    }
+
+    const handleMarkerSubmit = (markerId) => {
+      setMarkers(prevMarkers => {
+        const updatedMarkers = prevMarkers.map(marker => 
+          marker.id === markerId ? { ...marker, isEditing: false } : marker
+        )
+        saveMarkersToFirestore(updatedMarkers)
+        return updatedMarkers
+      })
+    }
+
+    const saveMarkersToFirestore = async (markers) => {
+      if (currentUser) {
+        try {
+          const userDocRef = doc(db, 'users', currentUser.uid)
+          await setDoc(userDocRef, { markers: markers }, { merge: true })
+        } catch (error) {
+          console.error('Error saving markers: ', error)
+        }
+      }
     }
     
     return (
@@ -138,17 +187,17 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
               callback: null,
               disabled: true},
               {text: `<i class="fa-solid fa-hotel"></i> Hotel`,
-              callback: (e) => addPin(e, 'hotel')},
+              callback: (e) => addMarker(e, 'hotel')},
               {text: `<i class="fas fa-utensils"></i> Restaurant`,
-              callback: (e) => addPin(e, 'restaurant')},
+              callback: (e) => addMarker(e, 'restaurant')},
               {text: `<i class="fas fa-landmark"></i> Museum`,
-              callback: (e) => addPin(e, 'museum')},
+              callback: (e) => addMarker(e, 'museum')},
               {text: `<i class="fa-solid fa-monument"></i> Landmark`,
-              callback: (e) => addPin(e, 'landmark')},
+              callback: (e) => addMarker(e, 'landmark')},
               {text: `<i class="fa-solid fa-person-hiking"></i> Hiking Spot`,
-              callback: (e) => addPin(e, 'hiking')},
+              callback: (e) => addMarker(e, 'hiking')},
               {text: `<i class="fa-solid fa-location-pin"></i> Other`,
-              callback: (e) => addPin(e, 'other')}
+              callback: (e) => addMarker(e, 'other')}
           ]}
         >
             <TileLayer
@@ -165,7 +214,13 @@ const MapComponent = ({ selectedColor, addedCountry, selectedCountries, onAddCou
                 />
             )}
             {markers && markers.length > 0 && markers.map((marker) => (
-              <MarkerComponent marker={marker} setMarkers={setMarkers} />
+              <MarkerComponent
+                marker={marker}
+                setMarkers={setMarkers}
+                onRemoveMarker={removeMarker}
+                onMarkerTitleChange={handleMarkerTitleChange}
+                onMarkerSubmit={handleMarkerSubmit}
+              />
             ))}
         </MapContainer>
     )

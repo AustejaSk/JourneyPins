@@ -10,7 +10,7 @@ import hikingPin from '../assets/hiking-pin.png'
 
 import uploadIcon from '../assets/upload-icon.png'
 
-const MarkerComponent = ({ marker, setMarkers }) => {
+const MarkerComponent = ({ marker, setMarkers, onRemoveMarker, onMarkerTitleChange, onMarkerSubmit }) => {
 
     const markerIcon = () => {
         if (marker.category === 'hotel') {
@@ -57,11 +57,11 @@ const MarkerComponent = ({ marker, setMarkers }) => {
     }
 
     const handleInputChange = (e, id) => {
-    setMarkers(prevMarkers => 
-        prevMarkers.map(marker =>
-        marker.id === id ? {...marker, title: e.target.value} : marker
+        setMarkers(prevMarkers => 
+            prevMarkers.map(marker =>
+            marker.id === id ? {...marker, title: e.target.value} : marker
+            )
         )
-    )
     }
 
     const handleImageInput = (e, id) => {
@@ -73,17 +73,13 @@ const MarkerComponent = ({ marker, setMarkers }) => {
     }
 
     const handlePopupSubmit = (e, id) => {
-    e.stopPropagation()
-    setMarkers(prevMarkers => 
-        prevMarkers.map(marker =>
-        marker.id === id ? {...marker, isEditing: false} : marker
-        )
-    )
+        e.stopPropagation()
+        onMarkerSubmit(id)
     }
 
     const removeMarker = (id) => {
-        setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id))
-      }
+        onRemoveMarker(id)
+    }
 
     return (
         <Marker
