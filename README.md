@@ -13,7 +13,7 @@ JourneyPins is an interactive web app where users can visually track their trave
 9. [License](#license)
 
 ## Overview
-JourneyPins uses React Leaflet to offer users an interactive mapping experience. Users can mark the countries they’ve visited and add customizable pins to specific locations. Each pin can be categorized (e.g., landmarks, hiking spots, or museums) and personalized with a unique title and image. Users can create an account and log in with email and password. Data saving is still under development, so added pins will reset upon refresh.
+JourneyPins uses React Leaflet to offer users an interactive mapping experience. Users can mark the countries they’ve visited and add customizable pins to specific locations. Each pin can be categorized (e.g., landmarks, hiking spots, or museums) and personalized with a unique title and image. Users can create an account and log in with email and password.
 
 ## Technologies
 - **React**: Used for building the user interface of the application.
@@ -54,7 +54,7 @@ JourneyPins uses React Leaflet to offer users an interactive mapping experience.
 4. **Choose a custom color for your map** using the color picker in the control panel, the color updates in real-time.
 5. **Add pins** to specific locations by right-clicking anywhere on the map and selecting a category from the menu.
 6. For each pin, add a custom **title** and upload an image by selecting a file from your device.
-7. Enjoy visualizing your travels! *(Note: Data saving is still under development, so added pins will reset upon page refresh.)*
+7. Enjoy visualizing your travels!
 
 ## Login Details for Testing
 To log in and test JourneyPins features, use the following credentials:
